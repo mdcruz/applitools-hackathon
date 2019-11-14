@@ -1,8 +1,9 @@
 /// <reference types="Cypress" />
 
 describe("Applitools Demo App", () => {
-  beforeEach(() => cy.visit("/hackathon.html"));
+  beforeEach(() => cy.visit("/hackathonV2.html"));
 
+  // Expected to fail as there are a number of bugs on login page on this version
   describe("Login Page", () => {
     it("it should display all fields and labels as expected", () => {
       cy.get(".logo-w a img").should("be.visible");
@@ -24,9 +25,10 @@ describe("Applitools Demo App", () => {
       cy.get("#log-in").click();
       cy.get(".alert-warning")
         .should("be.visible")
-        .should("have.text", "Both Username and Password must be present ");
+        .should("have.text", "Please enter both username and password");
     });
 
+    // Expected to fail as the error message is missing
     it("should throw an error if only username is provided when logging in", () => {
       cy.get("#username").type("test-username");
       cy.get("#log-in").click();
@@ -45,49 +47,48 @@ describe("Applitools Demo App", () => {
 
     it("should log you in successfully if both username and password are given", () => {
       cy.login("test-username", "test-password");
-      cy.url().should("contain", "hackathonApp.html");
+      cy.url().should("contain", "hackathonAppV2.html");
       cy.get(".logged-user-i").should("be.visible");
     });
   });
 
   describe("Recent transactions page", () => {
-    it.only("should display the recent transactions in ascending order when amount header is clicked", () => {
+    it("should display the recent transactions in ascending order when amount header is clicked", () => {
       const transactions = [];
       let isSorted = true;
 
       cy.login("test-username", "test-password");
       cy.get("#amount").click();
-      cy.get(".text-right.bolder.nowrap").each(element =>
-        cy
-          .get(element)
-          .invoke("text")
-          .then(text =>
-            transactions.push(
-              Number(
-                text
-                  .replace("USD", "")
-                  .replace(/\s/g, "")
-                  .replace(",", "")
-                  .trim()
+      cy.get(".text-right.bolder.nowrap")
+        .each(element => {
+          cy.get(element)
+            .invoke("text")
+            .then(text =>
+              transactions.push(
+                Number(
+                  text
+                    .replace("USD", "")
+                    .replace(/\s/g, "")
+                    .replace(",", "")
+                    .trim()
+                )
               )
-            )
-          )
-      );
+            );
+        })
+        .then(() => {
+          // checks if array is in ascending order
+          for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i] > transactions[i + 1]) {
+              isSorted = false;
+              break;
+            }
+          }
 
-      console.log(transactions);
-
-      // checks if array is in ascending order
-      for (let i = 0; i < transactions.length; i++) {
-        if (transactions[i] > transactions[i + 1]) {
-          isSorted = false;
-          break;
-        }
-      }
-
-      expect(isSorted).to.equal(
-        true,
-        "Transactions was not in ascending order"
-      );
+          expect(isSorted).to.equal(
+            true,
+            "Transactions was not in ascending order"
+          );
+        });
     });
   });
 
@@ -103,10 +104,10 @@ describe("Applitools Demo App", () => {
 
   describe("Dynamic adverts", () => {
     it("should display adverts on the page", () => {
-      cy.visit("/hackathon.html?showAd=true");
+      cy.visit("/hackathonV2.html?showAd=true");
       cy.login("test-username", "test-password");
-      cy.get("#flashSale").should("be.visible");
-      cy.get("#flashSale2").should("be.visible");
+      cy.get("#flashSale img").should("be.visible");
+      cy.get("#flashSale2 img").should("be.visible");
     });
   });
 });
