@@ -1,0 +1,24 @@
+{
+  "name": "applitools-hackathon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cypress:run": "./node_modules/.bin/cypress run",
+    "cypress:dev": "./node_modules/.bin/cypress open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdcruz/applitools-hackathon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mdcruz/applitools-hackathon/issues"
+  },
+  "homepage": "https://github.com/mdcruz/applitools-hackathon#readme",
+  "devDependencies": {
+    "@applitools/eyes-cypress": "^3.8.18",
+    "cypress": "^3.6.1"
+  }
+}
