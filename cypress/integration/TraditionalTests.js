@@ -51,7 +51,7 @@ describe("Applitools Demo App", () => {
   });
 
   describe("Recent transactions page", () => {
-    it("should display the recent transactions in ascending order when amount header is clicked", () => {
+    it.only("should display the recent transactions in ascending order when amount header is clicked", () => {
       const transactions = [];
       let isSorted = true;
 
@@ -66,7 +66,7 @@ describe("Applitools Demo App", () => {
               Number(
                 text
                   .replace("USD", "")
-                  .replace(" ", "")
+                  .replace(/\s/g, "")
                   .replace(",", "")
                   .trim()
               )
