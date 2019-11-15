@@ -52,6 +52,7 @@ describe("Applitools Demo App", () => {
     });
   });
 
+  // Expected to fail as transactions not listed in ascending order correctly
   describe("Recent transactions page", () => {
     it("should display the recent transactions in ascending order when amount header is clicked", () => {
       const transactions = [];
@@ -102,6 +103,7 @@ describe("Applitools Demo App", () => {
     });
   });
 
+  // Expected to fail as advert 1 not displayed on the page
   describe("Dynamic adverts", () => {
     it("should display adverts on the page", () => {
       cy.visit("/hackathonV2.html?showAd=true");
